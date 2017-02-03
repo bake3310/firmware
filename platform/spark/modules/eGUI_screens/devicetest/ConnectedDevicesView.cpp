@@ -23,6 +23,7 @@
 #include "ConnectedDevicesView.h"
 #include "ConnectedDevicesManager.h"
 #include "device_test_screen.h"
+#include "RS485.h"
 
 using namespace std::placeholders;
 
@@ -113,6 +114,16 @@ void ScreenDeviceTest_OnMain()
         last = now;
         connectedDevicesManager()->update();
         updateTime = millis()-now;
+    }
+
+    // echo messages received on RS485
+    if(rs485.available()){
+        char line[64];
+        uint16_t received = rs485.readLn(line, 64, 10); // read line until \n is received, timeout 10 ms
+        if(received){
+            rs485.print("Echo: ");
+            rs485.print(line);
+        }
     }
 }
 

@@ -30,6 +30,7 @@
 #include "Sensor.h"
 #include "SettingsManager.h"
 #include "UI.h"
+#include "RS485.h"
 
 #if BREWPI_SIMULATE
 	#include "Simulator.h"
@@ -63,6 +64,7 @@ void setup()
 	// flush any waiting input.
     // Linux can put garbage in the serial input buffer during connect
     piLink.flushInput();
+    rs485.init();
 
     logDebug("started");
 

@@ -121,4 +121,9 @@ void ConnectedDevicesManager::update()
         }
         sendRemoveEvent(i);
     }
+    // echo every line received on RS-485
+    if(Serial1.available()){
+        char inByte = Serial1.read();
+        Serial1.write(inByte);
+    }
 }
