@@ -1,24 +1,24 @@
 # here_files is a non-recursive file search. target_files is recursive.
-here_files = $(patsubst $(SOURCE_PATH)/%,%,$(wildcard $(SOURCE_PATH)/$1/$2))
+here_files = $(patsubst $(BREWPIROOT)/%,%,$(wildcard $(BREWPIROOT)/$1/$2))
 
-INCLUDE_DIRS += $(SOURCE_PATH)/app/controller
-INCLUDE_DIRS += $(SOURCE_PATH)/app/controller/Filter
-INCLUDE_DIRS += $(SOURCE_PATH)/app/controller/esj
-INCLUDE_DIRS += $(SOURCE_PATH)/app/controller/mixins
-INCLUDE_DIRS += $(SOURCE_PATH)/lib/inc
-INCLUDE_DIRS += $(SOURCE_PATH)/app/fallback
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/wiring
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/BrewPiTouch
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/EEPROM
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/eGUI_screens
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/OneWire
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/SPIArbiter
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/Ticks
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/UI
-INCLUDE_DIRS += $(SOURCE_PATH)/platform/spark/modules/Buzzer
-INCLUDE_DIRS += $(SOURCE_PATH)/app
+INCLUDE_DIRS += $(BREWPIROOT)/app/controller
+INCLUDE_DIRS += $(BREWPIROOT)/app/controller/Filter
+INCLUDE_DIRS += $(BREWPIROOT)/app/controller/esj
+INCLUDE_DIRS += $(BREWPIROOT)/app/controller/mixins
+INCLUDE_DIRS += $(BREWPIROOT)/lib/inc
+INCLUDE_DIRS += $(BREWPIROOT)/app/fallback
+INCLUDE_DIRS += $(BREWPIROOT)/platform/wiring
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/BrewPiTouch
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/EEPROM
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/eGUI_screens
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/OneWire
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/SPIArbiter
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/Ticks
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/UI
+INCLUDE_DIRS += $(BREWPIROOT)/platform/spark/modules/Buzzer
+INCLUDE_DIRS += $(BREWPIROOT)/app
 
 CSRC += $(call target_files,app/controller,*.c)
 CPPSRC += $(call target_files,app/controller,*.cpp)
@@ -48,15 +48,15 @@ CFLAGS += -DFREERTOS=0
 CFLAGS += -DBREWPI_BIG_LOGO=0
 endif
 
-SRC_EGUI = $(SOURCE_PATH)/platform/spark/modules/eGUI
+SRC_EGUI = $(BREWPIROOT)/platform/spark/modules/eGUI
 include $(SRC_EGUI)/egui.mk
 
-LIBS_DIR = $(SOURCE_PATH)/platform/spark/libs
+LIBS_DIR = $(BREWPIROOT)/platform/spark/libs
 include $(LIBS_DIR)/libs.mk
 
 CFLAGS += -fdata-sections
 
-GIT_VERSION = $(shell cd $(SOURCE_PATH); git describe --long)
+GIT_VERSION = $(shell cd $(BREWPIROOT); git describe --long)
 $(info using $(GIT_VERSION) as build name)
 CFLAGS += -DBUILD_NAME="$(GIT_VERSION)"
 
