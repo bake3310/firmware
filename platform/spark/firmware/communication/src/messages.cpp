@@ -18,7 +18,6 @@
  */
 
 #include "messages.h"
-#include "strnlen.h"
 
 namespace particle { namespace protocol {
 

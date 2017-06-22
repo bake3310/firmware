@@ -23,13 +23,6 @@
  ******************************************************************************
  */
 #include "device_globals.h"
-
-#undef ERROR
-
-// socklen_t is defined by boost to be signed, so we do a little switcheroo here
-#define socklen_t hal_socklen_t
-typedef uint32_t hal_socklen_t;
-
 #include "socket_hal.h"
 #include "inet_hal.h"
 #include "core_msg.h"
@@ -38,6 +31,11 @@ typedef uint32_t hal_socklen_t;
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #pragma GCC diagnostic ignored "-Wmissing-braces"
 #include <boost/array.hpp>
+
+// conflict of types
+#define socklen_t boost_socklen_t
+#include <boost/asio.hpp>
+#undef socklen_t
 
 #include <boost/system/system_error.hpp>
 
@@ -365,9 +363,9 @@ sock_result_t socket_sendto(sock_handle_t sd, const void* buffer, socklen_t len,
 	int count = socket.send_to(boost::asio::buffer(buffer, len), endpoint, 0, ec);
 
 	sock_handle_t result = ec.value();
-    if (result == boost::asio::error::would_block){
+    if (result == boost::asio::error::would_block)
         return 0;
-    }
+
 	return result ? result : count;
 }
 
@@ -395,10 +393,6 @@ sock_result_t socket_close(sock_handle_t socket)
 		servers.dispose(socket);
 	}
 	else if (socket>=SOCKET_COUNT)
-    {
-        servers.dispose(socket);
-    }
-    else if (socket>=SOCKET_COUNT)
     {
     		auto& s = udp_from(socket);
     		s.shutdown(boost::asio::ip::udp::socket::shutdown_both, ec);

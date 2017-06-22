@@ -40,9 +40,7 @@
 extern "C" {
 #endif
 
-#ifndef BYTE_ORDER
 #define BYTE_ORDER LITTLE_ENDIAN
-#endif
 
 #ifdef __cplusplus
 } /*extern "C" */

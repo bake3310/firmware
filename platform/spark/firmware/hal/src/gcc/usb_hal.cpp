@@ -28,22 +28,11 @@
 #include <stdint.h>
 #include <iostream>
 #include <stdio.h>
-#include <unistd.h>
-#ifndef _WIN32
 #include <sys/poll.h>
 #include <termios.h>
-#else
-#include <windows.h>
-#include <conio.h>
-#endif
+#include <unistd.h>
 
 uint32_t last_baudRate;
-fd_set stdin_fdset;
-#ifdef WIN32
-HANDLE input_handle;
-bool is_pipe;
-#endif
-
 /*******************************************************************************
  * Function Name  : USB_USART_Init
  * Description    : Start USB-USART protocol.
@@ -60,26 +49,14 @@ void USB_USART_Init(uint32_t baudRate)
  * Function Name  : USB_USART_Available_Data.
  * Description    : Return the length of available data received from USB.
  * Input          : None.
- * Return         : Non zero when data is available.
+ * Return         : Length.
  *******************************************************************************/
 uint8_t USB_USART_Available_Data(void)
 {
-    FD_ZERO(&stdin_fdset);
-    FD_SET(STDIN_FILENO, &stdin_fdset);
-
-    struct timeval tv = {0};
-    int retval = select(1, &stdin_fdset, NULL, NULL, &tv);
-    if (retval < 0) {
-        retval = 0;
-#if ( defined(_WIN32) || defined(_WIN32_WCE) ) && !defined(EFIX64) && \
-  !defined(EFI32)
-        volatile int error = WSAGetLastError();
-#else
-        volatile int error = errno;
-#endif
-        	(void)error;
-    }
-    return retval;
+    struct pollfd stdin_poll = { .fd = STDIN_FILENO
+            , .events = POLLIN | POLLRDBAND | POLLRDNORM | POLLPRI };
+    int ret = poll(&stdin_poll, 1, 0);
+    return ret;
 }
 
 int32_t last = -1;
@@ -92,7 +69,7 @@ int32_t last = -1;
  *******************************************************************************/
 int32_t USB_USART_Receive_Data(uint8_t peek)
 {
-    if (last<0 && USB_USART_Available_Data() > 0) {
+    if (last<0 && USB_USART_Available_Data()) {
         uint8_t data = 0;
         if (read(0, &data, 1))
             last = data;

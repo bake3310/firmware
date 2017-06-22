@@ -19,13 +19,6 @@
 
 #pragma once
 
-#include "strnlen.h"
-#include "protocol_defs.h"
-#include "events.h"
-#include "message_channel.h"
-
-
-
 namespace particle
 {
 namespace protocol

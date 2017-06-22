@@ -2100,9 +2100,7 @@
  *
  * This module enables abstraction of common (libc) functions.
  */
-#ifdef WIN32
-#define MBEDTLS_PLATFORM_C
-#endif
+//#define MBEDTLS_PLATFORM_C
 
 /**
  * \def MBEDTLS_RIPEMD160_C
