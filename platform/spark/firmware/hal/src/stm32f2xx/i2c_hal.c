@@ -33,7 +33,7 @@
 #include "interrupts_hal.h"
 
 #ifdef LOG_SOURCE_CATEGORY
-  LOG_SOURCE_CATEGORY("hal.i2c")
+LOG_SOURCE_CATEGORY("hal.i2c")
 #endif // LOG_SOURCE_CATEGORY
 
 /* Private typedef -----------------------------------------------------------*/

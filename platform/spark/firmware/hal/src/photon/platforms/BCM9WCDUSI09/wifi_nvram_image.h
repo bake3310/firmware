@@ -76,18 +76,18 @@ static const char wifi_ltxp_nvram_image[] =
         "ag0=2"                                                     "\x00"
 
 #if !WIFI_NVRAM_LTXP
-		"maxp2ga0=74"                                               "\x00"
+        "maxp2ga0=74"                                               "\x00"
         "ofdm2gpo=0x44111111"                                       "\x00"
         "mcs2gpo0=0x4444"                                           "\x00"
         "mcs2gpo1=0x6444"                                           "\x00"
 #else
-		"maxp2ga0=62"                                               "\x00"
+        "maxp2ga0=62"                                               "\x00"
         "ofdm2gpo=0xCCCCCCCC"                                       "\x00"
         "mcs2gpo0=0xCCCC"                                           "\x00"
         "mcs2gpo1=0xCCCC"                                           "\x00"
 #endif
 
-		"pa0maxpwr=80"                                              "\x00"
+        "pa0maxpwr=80"                                              "\x00"
         "pa0b0=5264"                                                "\x00"  /*PA params*/
         "pa0b1=64897"                                               "\x00"
         "pa0b2=65359"                                               "\x00"

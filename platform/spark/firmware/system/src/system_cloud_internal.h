@@ -29,6 +29,7 @@
 
 int Internet_Test(void);
 
+void spark_cloud_udp_port_set(uint16_t port);
 int spark_cloud_socket_connect(void);
 int spark_cloud_socket_disconnect(void);
 
@@ -41,12 +42,9 @@ void Spark_SetTime(unsigned long dateTime);
 void Spark_Process_Events();
 void Spark_Sleep();
 void Spark_Wake();
-extern volatile uint8_t LED_Spark_Signal;
-void LED_Signaling_Override(void);
 
 void system_set_time(time_t time, unsigned param, void* reserved);
 
-char* bytes2hexbuf(const uint8_t* buf, unsigned len, char* output);
 String bytes2hex(const uint8_t* buf, unsigned len);
 
 uint8_t spark_cloud_socket_closed();
@@ -70,7 +68,7 @@ struct User_Func_Lookup_Table_t
 {
     void* pUserFuncData;
     cloud_function_t pUserFunc;
-    char userFuncKey[USER_FUNC_KEY_LENGTH];
+    char userFuncKey[USER_FUNC_KEY_LENGTH+1];
 };
 
 
