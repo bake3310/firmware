@@ -1,3 +1,4 @@
+#ifndef HAL_CELLULAR_EXCLUDE
 
 #include <stdint.h>
 #include "socket_hal.h"
@@ -119,12 +120,12 @@ sock_handle_t socket_handle_invalid()
     return SOCKET_INVALID;
 }
 
-sock_result_t socket_join_multicast(const HAL_IPAddress* addr, network_interface_t nif, void* reserved)
+sock_result_t socket_join_multicast(const HAL_IPAddress* addr, network_interface_t nif, socket_multicast_info_t* reserved)
 {
     return -1;
 }
 
-sock_result_t socket_leave_multicast(const HAL_IPAddress* addr, network_interface_t nif, void* reserved)
+sock_result_t socket_leave_multicast(const HAL_IPAddress* addr, network_interface_t nif, socket_multicast_info_t* reserved)
 {
     return -1;
 }
@@ -138,3 +139,5 @@ sock_result_t socket_create_tcp_server(uint16_t port, network_interface_t nif)
 {
     return -1;
 }
+
+#endif // !defined(HAL_CELLULAR_EXCLUDE)
