@@ -57,6 +57,16 @@ BOOST_FUSION_DEFINE_STRUCT_INLINE(
     (int32_t, v3)
 )
 
+std::string as_hex(std::string str_in) {
+    std::ostringstream out;
+    for(char& c : str_in)
+    {
+       out << std::hex << std::setfill('0') << std::setw(2) << (int)(unsigned char) c;
+       out << ' ';
+    }
+    return out.str();
+}
+
 
 BOOST_AUTO_TEST_SUITE(msgpack_test)
 
@@ -65,11 +75,14 @@ BOOST_AUTO_TEST_CASE(dummy) {
     TestStruct val1;
     val1.v1 = 42;
     val1.v2 = 'a';
-    val1.v3 = INT32_MAX;
+    val1.v3 = 1235;
 
     msgpack::pack(ss, val1);
     msgpack::object_handle oh = msgpack::unpack(ss.str().data(), ss.str().size());
-    BOOST_TEST_MESSAGE("Packed message: " << ss.str());
+
+
+
+    BOOST_TEST_MESSAGE("Packed message: " << as_hex(ss.str()));
     BOOST_TEST_MESSAGE("Packed size: " << ss.str().size());
 
     TestStruct val2 = oh.get().as<TestStruct>();
