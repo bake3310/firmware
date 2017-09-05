@@ -25,11 +25,58 @@
 #include <iostream>
 #include <string>
 
-BOOST_AUTO_TEST_SUITE(x3)
+#include <msgpack.hpp>
+#include <stdio.h>
+
+#include <boost/fusion/adapted/struct/define_struct_inline.hpp>
+#include <boost/fusion/adapted/struct/adapt_struct.hpp>
+
+
+class Demo {
+public:
+    Demo(){}
+    ~Demo(){}
+
+    BOOST_FUSION_DEFINE_STRUCT_INLINE(
+        settings,
+        (int, s1)
+        (char, s2)
+    )
+
+    BOOST_FUSION_DEFINE_STRUCT_INLINE(
+        variables,
+        (int, v1)
+        (char, v2)
+    )
+};
+
+BOOST_FUSION_DEFINE_STRUCT_INLINE(
+    TestStruct,
+    (int, v1)
+    (char, v2)
+    (int32_t, v3)
+)
+
+
+BOOST_AUTO_TEST_SUITE(msgpack_test)
 
 BOOST_AUTO_TEST_CASE(dummy) {
-    BOOST_CHECK_EQUAL("a", "a");
+    std::stringstream ss;
+    TestStruct val1;
+    val1.v1 = 42;
+    val1.v2 = 'a';
+    val1.v3 = INT32_MAX;
 
+    msgpack::pack(ss, val1);
+    msgpack::object_handle oh = msgpack::unpack(ss.str().data(), ss.str().size());
+    BOOST_TEST_MESSAGE("Packed message: " << ss.str());
+    BOOST_TEST_MESSAGE("Packed size: " << ss.str().size());
+
+    TestStruct val2 = oh.get().as<TestStruct>();
+    BOOST_CHECK_EQUAL(val1.v1, val2.v1);
+    BOOST_CHECK_EQUAL(val1.v2, val2.v2);
+    BOOST_CHECK_EQUAL(val1.v3, val2.v3);
 }
+
 BOOST_AUTO_TEST_SUITE_END()
 

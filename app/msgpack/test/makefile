@@ -14,7 +14,7 @@ MKDIR = mkdir -p
 SRC_ROOT=../../../
 
 # location of this folder relative to the root
-SRC_PATH=app//test
+SRC_PATH=app/msgpack/test
 TARGETDIR=obj/
 TARGET=runner
 
@@ -31,8 +31,8 @@ rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2
 target_files = $(patsubst $(SRC_ROOT)%,%,$(call rwildcard,$(SRC_ROOT)$1,$2))
 
 # add all tests and test runner dependecies (target_files is recursive)
-CSRC += $(call target_files,app//test,*.c)
-CPPSRC += $(call target_files,app//test,*.cpp)
+CSRC += $(call target_files,app/msgpack/test,*.c)
+CPPSRC += $(call target_files,app/msgpack/test,*.cpp)
 
 # add test runner and dependencies
 INCLUDE_DIRS += $(SOURCE_PATH)/platform/test/inc
@@ -44,8 +44,15 @@ INCLUDE_DIRS += $(SOURCE_PATH)/lib/inc
 CSRC += $(call target_files,lib/src,*.c)
 CPPSRC += $(call target_files,lib/src,*.cpp)
 
+# add msgpack files
+INCLUDE_DIRS += $(SOURCE_PATH)/msgpack/include
+CSRC += $(call target_files,msgpack/src,*.c)
+CFLAGS += -DMSGPACK_USE_BOOST
+
 INCLUDE_DIRS += $(SOURCE_PATH)/lib/inc
 INCLUDE_DIRS += $(SOURCE_PATH)/lib/mixins #include empty mixins
+
+-include app/msgpack/env.mk
 
 ifeq ($(BOOST_ROOT),)
 $(error BOOST_ROOT not set. Download boost and add BOOST_ROOT to your environment variables.)
