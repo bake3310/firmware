@@ -566,6 +566,11 @@ public:
             CLR_WLAN_WD();
             WLAN_CONNECTED = 1;
             WLAN_LISTEN_ON_FAILED_CONNECT = false;
+#if PLATFORM_ID>2
+            // the IP config should be updated synchronously, but has hitherto been done asynchronously due to hysterical reasons -
+            // iirc the core would SOS. This should be investigated to validate for sure.
+            update_config();
+#endif
             LED_SIGNAL_START(NETWORK_CONNECTED, BACKGROUND);
             LED_SIGNAL_STOP(NETWORK_CONNECTING);
             system_notify_event(network_status, network_status_connected);
@@ -633,6 +638,12 @@ public:
         memcpy(config, this->config(), config->size);
     }
 
+    /**
+     * Fetch or refresh the current IP config.
+     * This delegates to the protected method fetch_ipconfig()
+     * @param force If the IP config has already been fetched, it is not
+     * refetched unless force is true.
+     */
     void update_config(bool force=false) override
     {
         // todo - IPv6 may not set this field.
