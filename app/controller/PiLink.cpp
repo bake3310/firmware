@@ -91,11 +91,6 @@ public:
             currentStream = &Serial;
         }
         else if (WiFi.ready()) {
-            if(WiFi.localIP()[0]==0){
-                // workaround for bug where WiFi.ready() returns true with IP 0.0.0.0
-                WiFi.disconnect();
-                return 0;
-            }
             if(!tcpServerRunning) {
                 tcpServer.begin();
                 tcpServerRunning = true;
