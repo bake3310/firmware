@@ -1,11 +1,14 @@
 #include "application.h"
 
+// Test app outputs PWM signal on wakeup pin, which is connected to buzzer on BrewPi Spark V3
+
 SYSTEM_MODE(MANUAL);
 SYSTEM_THREAD(ENABLED);
 SerialLogHandler traceLog(LOG_LEVEL_TRACE);
 
 void setup() {
     Serial.begin(115200);
+    pinMode(WKP, OUTPUT);
 }
 
 void loop() {
@@ -37,7 +40,6 @@ void loop() {
 
        if (WiFi.hasCredentials() && !WiFi.connecting()) {
            WiFi.connect();
-           waitUntil(WiFi.ready);
        }
     }
     while (tcpClient.available() > 0) {
@@ -61,5 +63,8 @@ void loop() {
         bool wifiReady = WiFi.ready();
         IPAddress ip = WiFi.localIP();
         Serial.printf("WiFi.ready(): %d - IP: %d.%d.%d.%d\n", wifiReady, ip[0],ip[1],ip[2],ip[3]);
+        analogWrite(WKP, 128, 3000);
+        delay(50);
+        analogWrite(WKP, 0, 3000);
     }
 }
